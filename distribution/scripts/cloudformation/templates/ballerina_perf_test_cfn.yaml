@@ -34,7 +34,7 @@
 {% call ec2instance('JMeterClientInstance', 'jmeter-client', '!Ref JMeterClientInstanceType',
   files=[{'name': 'apache-jmeter.tgz', 'ref': 'JMeterDistributionName'}, {'name': 'jdk-8-linux-x64.tar.gz', 'ref': 'OracleJDKDistributionName'}],
   public=True, volume_size=100) -%}
-/home/ubuntu/setup/setup-jmeter-client-ballerina.sh -g -k /home/ubuntu/private_key.pem \
+/home/ubuntu/ballerina-performance-distribution-1.1.1-SNAPSHOT/setup/setup-jmeter-client-ballerina.sh -g -k /home/ubuntu/private_key.pem \
   -i /home/ubuntu \
   -d /home/ubuntu/jdk-8-linux-x64.tar.gz \
   -f /home/ubuntu/apache-jmeter.tgz \
@@ -52,19 +52,19 @@
 {%- for i in range(1, jmeter_servers+1) -%}
 {% call ec2instance('JMeterServer' + i|string + 'Instance', 'jmeter-server-' + i|string, '!Ref JMeterServerInstanceType',
   files = [{'name': 'apache-jmeter.tgz', 'ref': 'JMeterDistributionName'}, {'name': 'jdk-8-linux-x64.tar.gz', 'ref': 'OracleJDKDistributionName'}]) -%}
-/home/ubuntu/setup/setup-jmeter-ballerina.sh -g -i /home/ubuntu -d /home/ubuntu/jdk-8-linux-x64.tar.gz -f /home/ubuntu/apache-jmeter.tgz
+/home/ubuntu/ballerina-performance-distribution-1.1.1-SNAPSHOT/setup/setup-jmeter-ballerina.sh -g -i /home/ubuntu -d /home/ubuntu/jdk-8-linux-x64.tar.gz -f /home/ubuntu/apache-jmeter.tgz
 {%- endcall %}
 {% endfor -%}
 {%- endif %}
 # Ballerina
 {% call ec2instance('BallerinaInstance', 'ballerina', '!Ref BallerinaInstanceType',
   files=[{'name': 'ballerina_installer.deb', 'ref': 'BallerinaInstallerName'}]) -%}
-/home/ubuntu/setup/setup-ballerina.sh -g -d /home/ubuntu/ballerina_installer.deb -n ${BackendInstance.PrivateIp}
+/home/ubuntu/ballerina-performance-distribution-1.1.1-SNAPSHOT/setup/setup-ballerina.sh -g -d /home/ubuntu/ballerina_installer.deb -n ${BackendInstance.PrivateIp}
 {%- endcall %}
 # Backend
 {% call ec2instance('BackendInstance', 'backend', '!Ref BackendInstanceType',
   files=[{'name': 'jdk-8-linux-x64.tar.gz', 'ref': 'OracleJDKDistributionName'}]) -%}
-/home/ubuntu/setup/setup-netty.sh -g -d /home/ubuntu/jdk-8-linux-x64.tar.gz
+/home/ubuntu/ballerina-performance-distribution-1.1.1-SNAPSHOT/setup/setup-netty.sh -g -d /home/ubuntu/jdk-8-linux-x64.tar.gz
 {%- endcall %}
 {%- endblock %}
 {% block outputs %}
